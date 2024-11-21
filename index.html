@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Pet Shop</title>
+        <link rel="shortcut icon" href="resources/icono.png"
+            type="image/x-icon">
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body>
+        <header>
+            <img src="resources/logo.png" alt="logo">
+            <h1>Tienda de animales</h1>
+        </header>
+
+        <main>
+            <div class="dogForm">
+                <!-- <form action="index.html">
+                    <h3>Filtrar por raza</h3>
+                    <p>Nota, si no eliges ninguna por defecto saldrán todas</p>
+                    <select name="razas" id="razas">
+                        <option value="prueba">Prueba</option>
+                    </select>
+                    <input type="submit" value="Enviar" />
+                </form> -->
+
+                <form action="index.html">
+                    <h3>Filtrar por raza</h3>
+                    <p>Si clicas en cualquier card también filtrará por raza</p>
+                    <input name="razas" id="razas"
+                        placeholder="Escribe la raza del perro (Si no pones nada salen todos por defecto)"
+                        list="razas-datalist">
+                    <datalist id="razas-datalist">
+                        <!-- Las razas se añadirán aquí -->
+                    </datalist>
+                    <input type="submit" value="Enviar" />
+                </form>
+
+            </div>
+            <div class="grid-container">
+                <!-- Las tarjetas aqui-->
+            </div>
+        </main>
+
+        <footer>
+            <p>Información de la página</p>
+        </footer>
+
+        <script src="js/script.js"></script>
+    </body>
+</html>
