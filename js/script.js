@@ -82,7 +82,7 @@ const fetchSoloRazas = async () => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    return data.message;
+    return Object.keys(data.message);
   } catch (error) {
     console.error("Error al conectar:", error);
     return [];
