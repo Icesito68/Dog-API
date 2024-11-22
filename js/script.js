@@ -103,33 +103,3 @@ const cargarOpciones = async () => {
 };
 
 document.addEventListener("DOMContentLoaded", cargarOpciones);
-
-function autocomplete(event) {
-  const inputElem = document.getElementById("razas");
-  const value = inputElem.value;
-
-  if (!value) {
-    hideResults();
-    inputElem.value = "";
-    return;
-  }
-
-  const razasFiltradas = breeds.filter((breed) =>
-    breed.startsWith(value.toLowerCase())
-  );
-  resultadosAutocomplete(razasFiltradas, value);
-}
-
-// Mostrar resultados de autocompletado
-function resultadosAutocomplete(results, value) {
-  const resultsElem = document.getElementById("autocomplete-results");
-  resultsElem.innerHTML = results
-    .map((result) => {
-      return `
-        <li class='autocomplete-result' role='option'>
-          ${result}
-        </li>
-      `;
-    })
-    .join("");
-}
