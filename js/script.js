@@ -1,7 +1,7 @@
 const gridContainer = document.querySelector(".grid-container");
 
 // https://carontestudio.com/blog/como-capturar-parametros-url-javascript/
-const fetchDog = async () => {
+const fetchDog = async (numImages) => {
   try {
     // Obtener el parámetro de la URL para la raza
     const url = new URLSearchParams(window.location.search);
@@ -9,40 +9,53 @@ const fetchDog = async () => {
     const inputElem = document.querySelector("input");
 
     let apiUrl;
+    let imageUrls = [];
 
     // Si hay una raza, obtenemos las imágenes solo de esa raza
     if (raza) {
       raza = raza.toLowerCase();
-      apiUrl = `https://dog.ceo/api/breed/${raza}/images/random`;
-    } else {
       // Si no hay raza, obtenemos imágenes aleatoria de todas las raza (posibilidad de que de error)
-      apiUrl = "https://dog.ceo/api/breeds/image/random";
+      apiUrl = `https://dog.ceo/api/breed/${raza}/images/random/${numImages}`; // Resulta que la api tiene para devolver un número de imagenes concreto
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      imageUrls = data.message;
+    } else {
+      // Lo primero es el localStorage, luego lo demás si este no existe
+      const imagenesGuardadas = localStorage.getItem("perroImagenesLocal");
+      if (imagenesGuardadas) {
+        imageUrls = JSON.parse(imagenesGuardadas);
+      } else {
+        apiUrl = `https://dog.ceo/api/breeds/image/random/${numImages}`;
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        imageUrls = data.message;
+        // Guardamos las imágenes en el localStorage para consultar aquí y no saturar a la api
+        localStorage.setItem("perroImagenesLocal", JSON.stringify(imageUrls));
+      }
     }
 
     inputElem.addEventListener("input", (event) => {
       autocomplete(event);
     });
 
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    return data.message; // Retorna solo la URL de la imagen
+    return imageUrls; // Retorna las URLs de las imágenes
   } catch (error) {
     console.error("Error al conectar:", error);
   }
 };
 
 const generarPerroCards = async (numeroCards) => {
-  for (let i = 0; i < numeroCards; i++) {
-    const imageUrl = await fetchDog();
+  const imageUrls = await fetchDog(numeroCards);
 
-    // Parámetros para crear la card
+  // Parámetros para crear la card
+  imageUrls.forEach((imageUrl) => {
     const card = crearPerroCards(imageUrl, extraerRaza(imageUrl));
     gridContainer.appendChild(card);
-  }
+  });
 };
 
-// Generar 6 tarjetas al cargar la página (realmente se pueden generar más pero tampoco quiero saturar la página)
-generarPerroCards(6);
+// Generar 9 tarjetas al cargar la página (realmente se pueden generar más pero tampoco quiero saturar la página)
+generarPerroCards(9); // ni con 1000 se ralentiza
 
 const crearPerroCards = (imageUrl, name) => {
   const card = document.createElement("div");
@@ -103,3 +116,5 @@ const cargarOpciones = async () => {
 };
 
 document.addEventListener("DOMContentLoaded", cargarOpciones);
+
+localStorage.clear(); // Se queda para pruebas
