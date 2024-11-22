@@ -117,4 +117,4 @@ const cargarOpciones = async () => {
 
 document.addEventListener("DOMContentLoaded", cargarOpciones);
 
-localStorage.clear(); // Se queda para pruebas
+// localStorage.clear(); // Se queda para pruebas
